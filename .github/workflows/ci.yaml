@@ -27,7 +27,7 @@ jobs:
         run: ./mvnw -f java/pom.xml -pl libs/langchain4j-otel test
 
       - name: Package Spring Boot sample
-        run: ./mvnw -f java/pom.xml -pl samples/rag-springboot package
+        run: ./mvnw -f java/pom.xml -pl samples/rag-springboot -am package
 
       - name: .NET unit tests
         run: dotnet test dotnet/libs/sk-otel.Tests/SkOtel.Tests.csproj --configuration Release
