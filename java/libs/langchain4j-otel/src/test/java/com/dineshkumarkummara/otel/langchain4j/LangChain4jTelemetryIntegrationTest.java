@@ -38,6 +38,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -58,6 +59,10 @@ class LangChain4jTelemetryIntegrationTest {
 
     @Test
     void emitsGenAiSpanAndMetrics() throws Exception {
+        Assumptions.assumeTrue(
+                org.testcontainers.DockerClientFactory.instance().isDockerAvailable(),
+                "Docker is not available on this host");
+
         int mappedPort = collector.getMappedPort(4317);
         String endpoint = "http://" + collector.getHost() + ":" + mappedPort;
 
