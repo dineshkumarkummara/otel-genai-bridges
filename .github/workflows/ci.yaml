@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Temurin 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build & test LangChain4j instrumentation
+        run: ./mvnw -f java/pom.xml -pl libs/langchain4j-otel test
+
+      - name: Package Spring Boot sample
+        run: ./mvnw -f java/pom.xml -pl samples/rag-springboot package
+
+      - name: .NET unit tests
+        run: dotnet test dotnet/libs/sk-otel.Tests/SkOtel.Tests.csproj --configuration Release
+
+      - name: Build Semantic Kernel sample
+        run: dotnet build dotnet/samples/sk-chat/SkChat.csproj --configuration Release
+
+      - name: Start observability stack
+        run: docker compose -f collector/docker-compose.yaml up -d --remove-orphans
+
+      - name: Start sample applications
+        run: |
+          java -jar java/samples/rag-springboot/target/rag-springboot-0.1.0-SNAPSHOT.jar &
+          echo "SPRING_PID=$!" >> $GITHUB_ENV
+          dotnet run --project dotnet/samples/sk-chat/SkChat.csproj --configuration Release --urls http://localhost:7080 &
+          echo "SK_PID=$!" >> $GITHUB_ENV
+
+      - name: Smoke test endpoints
+        run: |
+          sleep 20
+          curl -fsS http://localhost:8080/actuator/health || exit 1
+          curl -fsS http://localhost:7080/chat -H 'Content-Type: application/json' -d '{"question":"ping"}' || exit 1
+
+      - name: Stop sample applications
+        if: always()
+        run: |
+          if [[ -n "${SPRING_PID:-}" ]]; then kill $SPRING_PID || true; fi
+          if [[ -n "${SK_PID:-}" ]]; then kill $SK_PID || true; fi
+
+      - name: Teardown observability stack
+        if: always()
+        run: docker compose -f collector/docker-compose.yaml down --remove-orphans
+
+      - name: Upload Grafana dashboards
+        uses: actions/upload-artifact@v4
+        with:
+          name: grafana-dashboards
+          path: dashboards/*.json

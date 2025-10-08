@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: rag-springboot
+  main:
+    banner-mode: off
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+otel:
+  exporter:
+    otlp:
+      endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4317}
+  langchain4j:
+    system: local.mock
+    default-model: local-mock-gpt
+    capture-prompts: true
+    capture-completions: true
+    cost:
+      enabled: true
+      input-per-thousand: 0.0001
+      output-per-thousand: 0.00015
+
+logging:
+  level:
+    root: INFO
+    com.dineshkumarkummara.otel: DEBUG

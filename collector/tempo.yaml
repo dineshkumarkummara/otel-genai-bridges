@@ -1,0 +1,13 @@
+ingester:
+  max_block_duration: 5m
+server:
+  http_listen_port: 3200
+  log_level: info
+storage:
+  trace:
+    backend: local
+    local:
+      path: /tmp/tempo
+compactor:
+  compaction:
+    block_retention: 24h

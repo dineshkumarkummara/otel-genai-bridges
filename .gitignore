@@ -1,0 +1,27 @@
+# General
+.DS_Store
+*.log
+
+# Java
+**/target/
+**/.mvn/
+*.iml
+
+# Gradle
+.gradle/
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+
+# .NET
+**/bin/
+**/obj/
+
+# VS Code
+.vscode/
+
+# Testcontainers
+**/testcontainers/**
