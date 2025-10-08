@@ -62,6 +62,9 @@ class LangChain4jTelemetryIntegrationTest {
         Assumptions.assumeTrue(
                 org.testcontainers.DockerClientFactory.instance().isDockerAvailable(),
                 "Docker is not available on this host");
+        Assumptions.assumeFalse(
+                "true".equalsIgnoreCase(System.getenv("CI")),
+                "Skipping Testcontainers-based check on CI");
 
         int mappedPort = collector.getMappedPort(4317);
         String endpoint = "http://" + collector.getHost() + ":" + mappedPort;
