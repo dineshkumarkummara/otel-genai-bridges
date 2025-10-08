@@ -17,6 +17,7 @@ package com.dineshkumarkummara.otel.rag;
 
 import com.dineshkumarkummara.otel.langchain4j.LangChain4jTelemetry;
 import com.dineshkumarkummara.otel.langchain4j.LangChain4jTelemetryProperties;
+import dev.langchain4j.agent.tool.ToolExecutionRequest;
 import dev.langchain4j.agent.tool.ToolSpecification;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ChatMessage;
@@ -84,7 +85,8 @@ public class LocalChatLanguageModel implements ChatLanguageModel {
         String question = prompt != null ? prompt.replaceFirst("^(RAG:|CHAT:)", "").trim() : "";
         RagResponse ragResponse = ragMode ? answerWithKnowledge(question) : answerConversation(question);
         TokenUsage usage = new TokenUsage(countTokens(prompt), countTokens(ragResponse.answer()), countTokens(prompt) + countTokens(ragResponse.answer()));
-        return Response.from(AiMessage.from(ragResponse.answer()), usage, FinishReason.STOP);
+        AiMessage message = buildAiMessage(ragResponse);
+        return Response.from(message, usage, FinishReason.STOP);
     }
 
     @Override
@@ -139,6 +141,20 @@ public class LocalChatLanguageModel implements ChatLanguageModel {
                 .put(AttributeKey.stringKey("gen_ai.operation.name"), telemetryProperties.getOperationName())
                 .build();
         telemetry.recordRagLatency("local-knowledge-base", latency, attributes);
+    }
+
+    private AiMessage buildAiMessage(RagResponse response) {
+        if (response.documents().isEmpty()) {
+            return AiMessage.from(response.answer());
+        }
+        List<ToolExecutionRequest> toolCalls = response.documents().stream()
+                .map(doc -> ToolExecutionRequest.builder()
+                        .id("rag-" + doc.id())
+                        .name("knowledge-base")
+                        .arguments("{\"title\":\"" + doc.title() + "\"}")
+                        .build())
+                .collect(Collectors.toList());
+        return new AiMessage(response.answer(), toolCalls);
     }
 
     public record RagResponse(String answer, List<RagKnowledgeBase.RagDocument> documents) {}
