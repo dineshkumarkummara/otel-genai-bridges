@@ -24,3 +24,7 @@ __pycache__/
 
 # Testcontainers
 **/testcontainers/**
+
+# Upstream forks (local PR prep)
+langchain4j/
+semantic-kernel/

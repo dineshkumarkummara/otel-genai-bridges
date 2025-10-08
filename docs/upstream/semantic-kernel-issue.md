@@ -31,5 +31,7 @@ builder.Services.AddOpenTelemetry()
 
 Repository: https://github.com/dineshkumarkummara/otel-genai-bridges
 
+![Grafana token throughput panel](https://github.com/dineshkumarkummara/otel-genai-bridges/raw/main/docs/screenshots/grafana-tokens.png)
+
 **Proposal**
 Add a community sample entry (or docs page) highlighting this instrumentation and linking to the repo, so SK developers can quickly adopt OTel GenAI telemetry while the ecosystem matures.

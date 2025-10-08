@@ -34,8 +34,8 @@ trap cleanup EXIT INT TERM
 
 pushd "$ROOT_DIR" >/dev/null
 
-./mvnw -pl libs/langchain4j-otel -am package
-./mvnw -pl samples/rag-springboot -am package
+./mvnw -f java/pom.xml -pl libs/langchain4j-otel -am package -DskipTests
+./mvnw -f java/pom.xml -pl samples/rag-springboot -am package -DskipTests
 
 dotnet build dotnet/libs/sk-otel/SkOtel.csproj
 dotnet build dotnet/samples/sk-chat/SkChat.csproj

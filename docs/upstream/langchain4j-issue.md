@@ -33,5 +33,7 @@ otel:
 
 Full repository (libraries, samples, dashboards): https://github.com/dineshkumarkummara/otel-genai-bridges
 
+![Grafana latency panel](https://github.com/dineshkumarkummara/otel-genai-bridges/raw/main/docs/screenshots/grafana-latency.png)
+
 **Proposal**
 Add a docs page (or section under the observability guide) that highlights this library as a community-driven instrumentation option and links back to the repo. This gives users immediate instrumentation while the project evaluates deeper OTel integration.

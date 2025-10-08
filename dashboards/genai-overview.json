@@ -6,12 +6,18 @@
   "schemaVersion": 39,
   "version": 1,
   "refresh": "30s",
-  "tags": ["otel", "genai"],
+  "tags": [
+    "otel",
+    "genai"
+  ],
   "panels": [
     {
       "type": "timeseries",
       "title": "GenAI Operation Latency",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "targets": [
         {
           "refId": "A",
@@ -29,13 +35,26 @@
           "legendFormat": "p99 {{gen_ai_request_model}}"
         }
       ],
-      "fieldConfig": {"defaults": {"unit": "s"}},
-      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8}
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "id": 1
     },
     {
       "type": "timeseries",
       "title": "Token Utilization",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "targets": [
         {
           "refId": "A",
@@ -43,13 +62,26 @@
           "legendFormat": "{{gen_ai_token_type}} {{gen_ai_request_model}}"
         }
       ],
-      "fieldConfig": {"defaults": {"unit": "tokens/s"}},
-      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8}
+      "fieldConfig": {
+        "defaults": {
+          "unit": "tokens/s"
+        }
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "id": 2
     },
     {
       "type": "timeseries",
       "title": "Error Rate",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "targets": [
         {
           "refId": "A",
@@ -57,12 +89,21 @@
           "legendFormat": "errors {{gen_ai_request_model}}"
         }
       ],
-      "gridPos": {"x": 0, "y": 8, "w": 8, "h": 8}
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 8,
+        "h": 8
+      },
+      "id": 3
     },
     {
       "type": "timeseries",
       "title": "Cost per Minute",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "targets": [
         {
           "refId": "A",
@@ -70,13 +111,26 @@
           "legendFormat": "cost {{gen_ai_request_model}}"
         }
       ],
-      "fieldConfig": {"defaults": {"unit": "usd"}},
-      "gridPos": {"x": 8, "y": 8, "w": 8, "h": 8}
+      "fieldConfig": {
+        "defaults": {
+          "unit": "usd"
+        }
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 8,
+        "w": 8,
+        "h": 8
+      },
+      "id": 4
     },
     {
       "type": "state-timeline",
       "title": "Tool Call Breakdown",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "targets": [
         {
           "refId": "A",
@@ -84,12 +138,21 @@
           "legendFormat": "{{tool_name}} ({{gen_ai_request_model}})"
         }
       ],
-      "gridPos": {"x": 16, "y": 8, "w": 8, "h": 8}
+      "gridPos": {
+        "x": 16,
+        "y": 8,
+        "w": 8,
+        "h": 8
+      },
+      "id": 5
     },
     {
       "type": "timeseries",
       "title": "RAG Retrieval Latency",
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "targets": [
         {
           "refId": "A",
@@ -97,22 +160,46 @@
           "legendFormat": "p95 {{datasource}}"
         }
       ],
-      "fieldConfig": {"defaults": {"unit": "s"}},
-      "gridPos": {"x": 0, "y": 16, "w": 12, "h": 8}
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "id": 6
     },
     {
       "type": "traceql-search",
       "title": "Recent Traces",
-      "datasource": {"type": "tempo", "uid": "tempo"},
+      "datasource": {
+        "type": "tempo",
+        "uid": "tempo"
+      },
       "targets": [
         {
           "refId": "A",
           "query": "{ service.name = \"genai-rag-service\" } | limit 20"
         }
       ],
-      "gridPos": {"x": 12, "y": 16, "w": 12, "h": 8}
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "id": 7
     }
   ],
-  "templating": {"list": []},
-  "time": {"from": "now-30m", "to": "now"}
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  }
 }

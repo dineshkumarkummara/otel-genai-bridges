@@ -52,6 +52,9 @@ Grafana (http://localhost:3000/d/genai-overview) shows latency quantiles, token 
 <p align="center">
   <img src="docs/screenshots/grafana-errors.png" alt="Grafana panel showing error rate" width="600">
 </p>
+<p align="center">
+  <img src="docs/screenshots/grafana-tool-calls.png" alt="Grafana panel showing tool call breakdown" width="600">
+</p>
 
 _Screenshots captured from the bundled Grafana dashboard after running `./scripts/run_all.sh`._
 
